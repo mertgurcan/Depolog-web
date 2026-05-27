@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gizlilik Politikası — Depolog</title>
+<meta name="description" content="Depolog yakıt takip uygulaması gizlilik politikası. Hesapsız, lokal veri.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700;12..96,800&family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0A0A0C;
+    --bg-2: #111114;
+    --bg-3: #16161A;
+    --line: #23232A;
+    --line-2: #2E2E36;
+    --text: #ECECEE;
+    --text-dim: #9A9AA3;
+    --text-mute: #6A6A73;
+    --accent: #FF7A2F;
+    --accent-soft: rgba(255, 122, 47, 0.12);
+    --accent-glow: rgba(255, 122, 47, 0.35);
+    --radius: 14px;
+    --max: 880px;
+  }
+
+  *{ box-sizing: border-box; margin: 0; padding: 0; }
+  html{ scroll-behavior: smooth; }
+
+  body{
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Geist', system-ui, sans-serif;
+    font-weight: 400;
+    line-height: 1.65;
+    font-size: 16px;
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -10%, var(--accent-soft), transparent 60%),
+      radial-gradient(ellipse 60% 40% at 100% 100%, rgba(255,122,47,0.04), transparent 70%);
+  }
+
+  body::before{
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.04 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    opacity: 0.6;
+    mix-blend-mode: overlay;
+    z-index: 1;
+  }
+
+  .wrap{
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .topbar{
+    padding: 28px 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .brand{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: var(--text);
+  }
+
+  .brand-mark{
+    width: 36px;
+    height: 36px;
+    border-radius: 9px;
+    background: linear-gradient(135deg, #FF7A2F 0%, #E85A0F 100%);
+    display: grid;
+    place-items: center;
+    box-shadow: 0 6px 20px -6px var(--accent-glow), inset 0 1px 0 rgba(255,255,255,0.2);
+    position: relative;
+  }
+
+  .brand-mark svg{ width: 20px; height: 20px; color: #0A0A0C; }
+
+  .brand-name{
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: -0.01em;
+  }
+
+  .brand-tag{
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px;
+    color: var(--text-mute);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .hero{
+    padding: 80px 0 60px;
+    border-bottom: 1px solid var(--line);
+    position: relative;
+  }
+
+  .eyebrow{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    padding: 6px 12px;
+    border: 1px solid rgba(255,122,47,0.25);
+    border-radius: 100px;
+    background: var(--accent-soft);
+    margin-bottom: 28px;
+  }
+
+  .eyebrow::before{
+    content: "";
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 12px var(--accent);
+  }
+
+  h1{
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-weight: 700;
+    font-size: clamp(40px, 6vw, 64px);
+    line-height: 1.05;
+    letter-spacing: -0.035em;
+    margin-bottom: 24px;
+  }
+
+  h1 .accent{
+    color: var(--accent);
+    font-style: italic;
+    font-weight: 500;
+  }
+
+  .lede{
+    font-size: 19px;
+    color: var(--text-dim);
+    line-height: 1.6;
+    max-width: 640px;
+    margin-bottom: 36px;
+  }
+
+  .meta{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    font-family: 'Geist Mono', monospace;
+    font-size: 12px;
+    color: var(--text-mute);
+  }
+
+  .meta span{ display: flex; align-items: center; gap: 8px; }
+  .meta b{ color: var(--text); font-weight: 500; }
+
+  .toc{
+    margin: 56px 0;
+    padding: 28px;
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .toc::before{
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: var(--accent);
+  }
+
+  .toc-title{
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--text-mute);
+    margin-bottom: 18px;
+  }
+
+  .toc ol{
+    list-style: none;
+    counter-reset: toc;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 4px 24px;
+  }
+
+  .toc li{
+    counter-increment: toc;
+    border-bottom: 1px dashed var(--line);
+  }
+
+  .toc a{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 0;
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.2s, padding 0.2s;
+  }
+
+  .toc a::before{
+    content: counter(toc, decimal-leading-zero);
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px;
+    color: var(--text-mute);
+    margin-right: 14px;
+    transition: color 0.2s;
+  }
+
+  .toc a:hover{ color: var(--accent); padding-left: 6px; }
+  .toc a:hover::before{ color: var(--accent); }
+
+  section{
+    padding: 56px 0;
+    border-bottom: 1px solid var(--line);
+    scroll-margin-top: 24px;
+  }
+
+  section:last-of-type{ border-bottom: none; }
+
+  .section-num{
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    margin-bottom: 12px;
+  }
+
+  h2{
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-weight: 700;
+    font-size: clamp(28px, 3.5vw, 36px);
+    line-height: 1.15;
+    letter-spacing: -0.025em;
+    margin-bottom: 24px;
+    color: var(--text);
+  }
+
+  h3{
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    margin: 32px 0 12px;
+    color: var(--text);
+    letter-spacing: -0.01em;
+  }
+
+  p{
+    color: var(--text-dim);
+    margin-bottom: 16px;
+    font-size: 16px;
+  }
+
+  strong{ color: var(--text); font-weight: 500; }
+
+  a:not(.brand):not(.toc a):not(.btn){
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255,122,47,0.3);
+    transition: border-color 0.2s;
+  }
+  a:not(.brand):not(.toc a):not(.btn):hover{ border-bottom-color: var(--accent); }
+
+  ul{ list-style: none; margin: 8px 0 20px; }
+
+  ul li{
+    color: var(--text-dim);
+    padding: 6px 0 6px 24px;
+    position: relative;
+    font-size: 15px;
+  }
+
+  ul li::before{
+    content: "";
+    position: absolute;
+    left: 0; top: 16px;
+    width: 8px; height: 1px;
+    background: var(--accent);
+  }
+
+  .callout{
+    margin: 24px 0;
+    padding: 20px 24px;
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .callout-icon{
+    flex-shrink: 0;
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    display: grid;
+    place-items: center;
+  }
+
+  .callout-icon svg{ width: 16px; height: 16px; }
+
+  .callout p{
+    margin: 0;
+    font-size: 15px;
+  }
+
+  .callout strong{ display: block; margin-bottom: 4px; color: var(--text); }
+
+  .data-grid{
+    margin: 20px 0;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .data-row{
+    display: grid;
+    grid-template-columns: 1fr 1.2fr 1fr;
+    gap: 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .data-row:last-child{ border-bottom: none; }
+
+  .data-row.header{
+    background: var(--bg-2);
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-mute);
+  }
+
+  .data-cell{
+    padding: 14px 18px;
+    font-size: 14px;
+    color: var(--text-dim);
+    border-right: 1px solid var(--line);
+  }
+  .data-cell:last-child{ border-right: none; }
+  .data-row:not(.header) .data-cell:first-child{ color: var(--text); font-weight: 500; }
+
+  .contact-card{
+    margin-top: 32px;
+    padding: 36px;
+    background: linear-gradient(135deg, var(--bg-2) 0%, var(--bg-3) 100%);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .contact-card::after{
+    content: "";
+    position: absolute;
+    top: -50%; right: -20%;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, var(--accent-soft) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .contact-card h3{ margin-top: 0; font-size: 22px; }
+
+  .contact-path{
+    font-family: 'Geist Mono', monospace;
+    font-size: 14px;
+    color: var(--accent);
+    margin-top: 12px;
+    display: inline-block;
+    padding: 8px 14px;
+    background: var(--accent-soft);
+    border: 1px solid rgba(255,122,47,0.25);
+    border-radius: 8px;
+    position: relative;
+    z-index: 1;
+  }
+
+  footer{
+    padding: 48px 0 64px;
+    border-top: 1px solid var(--line);
+    margin-top: 24px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px;
+    color: var(--text-mute);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  footer a{ color: var(--text-mute); text-decoration: none; transition: color 0.2s; }
+  footer a:hover{ color: var(--accent); }
+
+  @media (max-width: 640px){
+    .toc ol{ grid-template-columns: 1fr; }
+    .data-row{ grid-template-columns: 1fr; }
+    .data-cell{ border-right: none; border-bottom: 1px solid var(--line); padding: 10px 16px; }
+    .data-row .data-cell:last-child{ border-bottom: none; }
+    .data-row.header{ display: none; }
+    .data-row:not(.header) .data-cell::before{
+      content: attr(data-label) " · ";
+      font-family: 'Geist Mono', monospace;
+      font-size: 10px;
+      color: var(--text-mute);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-right: 6px;
+    }
+    .hero{ padding: 48px 0 40px; }
+    section{ padding: 40px 0; }
+    .contact-card{ padding: 24px; }
+  }
+
+  ::selection{ background: var(--accent); color: var(--bg); }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="topbar">
+    <a href="#" class="brand">
+      <span class="brand-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 22h12"/>
+          <path d="M5 22V4a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v18"/>
+          <path d="M5 10h10"/>
+          <path d="M15 8h2a2 2 0 0 1 2 2v4a2 2 0 0 0 2 2v-9"/>
+          <path d="M19 5l-2-2"/>
+        </svg>
+      </span>
+      <div>
+        <div class="brand-name">Depolog</div>
+        <div class="brand-tag">Yakıt takip</div>
+      </div>
+    </a>
+    <div class="brand-tag" style="font-size:11px;">v1.0 · iOS</div>
+  </header>
+
+  <div class="hero">
+    <span class="eyebrow">Yasal · Şeffaflık</span>
+    <h1>Gizlilik <span class="accent">politikası</span></h1>
+    <p class="lede">
+      Depolog hesap istemez. Yakıt verilerin cihazında kalır. Yalnızca uygulamayı
+      iyileştirmek için anonim kullanım istatistikleri ve — eğer sen yazarsan —
+      uygulama içi geri bildirim mesajların Firebase'e gönderilir. Aşağıda bunun
+      teknik karşılığını ve haklarını sade biçimde açıklıyoruz.
+    </p>
+    <div class="meta">
+      <span><b>Son güncelleme:</b> [GG Ay YYYY]</span>
+      <span><b>Yürürlük:</b> v1.0</span>
+      <span><b>Geliştirici:</b> Mert Gürcan</span>
+    </div>
+  </div>
+
+  <nav class="toc">
+    <div class="toc-title">İçindekiler</div>
+    <ol>
+      <li><a href="#ozet">Özet <span>↗</span></a></li>
+      <li><a href="#topladigimiz">Topladığımız veriler <span>↗</span></a></li>
+      <li><a href="#kamera">Kamera & fiş tarama <span>↗</span></a></li>
+      <li><a href="#analitik">Analitik (Firebase) <span>↗</span></a></li>
+      <li><a href="#geribildirim">Uygulama içi geri bildirim <span>↗</span></a></li>
+      <li><a href="#ucuncu-taraf">Üçüncü taraf servisler <span>↗</span></a></li>
+      <li><a href="#saklama">Veri saklama & dışa aktarma <span>↗</span></a></li>
+      <li><a href="#haklar">Haklarınız <span>↗</span></a></li>
+      <li><a href="#cocuklar">Çocukların gizliliği <span>↗</span></a></li>
+      <li><a href="#degisiklik">Değişiklikler <span>↗</span></a></li>
+      <li><a href="#iletisim">İletişim <span>↗</span></a></li>
+    </ol>
+  </nav>
+
+  <section id="ozet">
+    <div class="section-num">01 · Özet</div>
+    <h2>Kısaca ne yapıyoruz?</h2>
+    <p>
+      Depolog; yakıt alımlarını, kilometre okumalarını ve araç bilgilerini takip etmen için
+      tasarlanmış bir iOS uygulamasıdır. Yakıt ve araç verilerinin <strong>yalnızca cihazında</strong>
+      (Apple CoreData üzerinde) saklanır.
+    </p>
+    <div class="callout">
+      <div class="callout-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        </svg>
+      </div>
+      <p>
+        <strong>Hesap yok. Reklam yok. Yakıt verin cihazından çıkmaz.</strong>
+        Depolog'u kullanmak için kayıt olmana, e-posta vermene veya hesap açmana gerek yoktur.
+        Yalnızca anonim kullanım istatistikleri ve — eğer sen seçersen — uygulama içi
+        geri bildirim mesajların Google Firebase'e gönderilir.
+      </p>
+    </div>
+    <p>
+      Bu politika, uygulamayı kullandığında hangi verilerin nerede kaldığını, hangi
+      üçüncü taraf servislerin devreye girdiğini ve haklarını ne yolla
+      kullanabileceğini açıklar.
+    </p>
+  </section>
+
+  <section id="topladigimiz">
+    <div class="section-num">02 · Veriler</div>
+    <h2>Hangi verileri topluyoruz?</h2>
+    <p>
+      Yakıt ve araç verilerinle ilgili <strong>hiçbir kişisel bilgi bizim sunucularımıza
+      gönderilmez</strong> — çünkü bizim bir sunucumuz yok. Cihazında ve Firebase'de
+      saklanan veriler:
+    </p>
+
+    <div class="data-grid">
+      <div class="data-row header">
+        <div class="data-cell">Veri Türü</div>
+        <div class="data-cell">İçerik</div>
+        <div class="data-cell">Nerede Saklanır</div>
+      </div>
+      <div class="data-row">
+        <div class="data-cell" data-label="Veri">Araç bilgileri</div>
+        <div class="data-cell" data-label="İçerik">Marka, model, plaka, yakıt tipi</div>
+        <div class="data-cell" data-label="Konum">Cihazında (CoreData)</div>
+      </div>
+      <div class="data-row">
+        <div class="data-cell" data-label="Veri">Yakıt kayıtları</div>
+        <div class="data-cell" data-label="İçerik">Tarih, miktar, tutar, kilometre</div>
+        <div class="data-cell" data-label="Konum">Cihazında (CoreData)</div>
+      </div>
+      <div class="data-row">
+        <div class="data-cell" data-label="Veri">Fiş görselleri</div>
+        <div class="data-cell" data-label="İçerik">İsteğe bağlı taradığın fişler</div>
+        <div class="data-cell" data-label="Konum">Cihazında (Documents)</div>
+      </div>
+      <div class="data-row">
+        <div class="data-cell" data-label="Veri">Uygulama ayarları</div>
+        <div class="data-cell" data-label="İçerik">Tema, birim, dil tercihi</div>
+        <div class="data-cell" data-label="Konum">Cihazında (UserDefaults)</div>
+      </div>
+      <div class="data-row">
+        <div class="data-cell" data-label="Veri">Anonim analitik</div>
+        <div class="data-cell" data-label="İçerik">Ekran görüntülemeleri, olay sayıları, cihaz modeli</div>
+        <div class="data-cell" data-label="Konum">Google Firebase</div>
+      </div>
+      <div class="data-row">
+        <div class="data-cell" data-label="Veri">Geri bildirim mesajları</div>
+        <div class="data-cell" data-label="İçerik">Senin yazdığın mesaj metni + cihaz/sürüm bilgisi</div>
+        <div class="data-cell" data-label="Konum">Google Firebase</div>
+      </div>
+    </div>
+
+    <p>
+      Yakıt ve araç verilerin cihazından silindiğinde veya uygulamayı kaldırdığında yok olur,
+      geri yüklenemez. Firebase'e gönderilen veriler aşağıdaki 4. ve 5. bölümlerde
+      detaylandırılmıştır.
+    </p>
+  </section>
+
+  <section id="kamera">
+    <div class="section-num">03 · Kamera</div>
+    <h2>Kamera erişimi ve fiş tarama</h2>
+    <p>
+      Depolog'un fiş tarama özelliği <strong>kamera iznine</strong> ihtiyaç duyar. Bu izni
+      yalnızca <em>sen</em> "Fiş Tara" ekranında bir fişi çekmek istediğinde kullanır.
+    </p>
+    <p>
+      Çekilen görsel cihazında işlenir; metin tanıma (OCR) işlemi Apple'ın yerleşik
+      <strong>Vision framework</strong>'ü ile <em>cihaz üzerinde</em> gerçekleştirilir.
+      Görüntü hiçbir sunucuya yüklenmez. Tanınan metin, fiş kaydına ilişkilendirilerek
+      cihazında tutulur.
+    </p>
+    <div class="callout">
+      <div class="callout-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/>
+          <circle cx="12" cy="13" r="3"/>
+        </svg>
+      </div>
+      <p>
+        <strong>İstediğin zaman iptal edebilirsin.</strong>
+        iOS Ayarlar → Depolog menüsünden kamera iznini kapatabilirsin; uygulamanın diğer
+        bölümleri çalışmaya devam eder.
+      </p>
+    </div>
+  </section>
+
+  <section id="analitik">
+    <div class="section-num">04 · Analitik</div>
+    <h2>Google Firebase Analytics</h2>
+    <p>
+      Depolog'u nasıl kullandığını anlamak ve uygulamayı iyileştirmek için
+      <strong>Google Firebase Analytics</strong> kullanıyoruz. Bu servis, kullanım
+      hakkında anonim ve toplam veriler üretir — kim olduğunu değil,
+      <em>nasıl kullanıldığını</em> ölçer.
+    </p>
+
+    <h3>Toplanan veriler</h3>
+    <ul>
+      <li><strong>Ekran görüntülemeleri</strong> — hangi ekranların açıldığı (ör. "Fiş Tara", "İstatistik")</li>
+      <li><strong>Olay sayıları</strong> — özellik kullanımı (ör. yeni yakıt kaydı eklendi)</li>
+      <li><strong>Cihaz bilgileri</strong> — iOS sürümü, cihaz modeli, dil, ülke</li>
+      <li><strong>Uygulama sürümü</strong> — hangi Depolog sürümünü kullandığın</li>
+      <li><strong>Firebase Instance ID</strong> — uygulama kurulumuna özel anonim tanımlayıcı (kişisel veri içermez)</li>
+    </ul>
+
+    <h3>Toplanmayan veriler</h3>
+    <ul>
+      <li>Yakıt kayıtların, araç bilgilerin, kilometre verin</li>
+      <li>Fiş görselleri veya OCR ile tanınmış metinler</li>
+      <li>Adın, e-postan, telefon numaran (Depolog bunları zaten istemiyor)</li>
+      <li>Hassas konum (GPS) — Depolog konum izni istemez</li>
+    </ul>
+
+    <h3>App Tracking Transparency (ATT)</h3>
+    <p>
+      Apple'ın ATT politikası gereği, Depolog reklam izleme tanımlayıcısı (IDFA)
+      <strong>kullanmaz</strong>. Bu yüzden iOS izleme izni penceresini görmezsin.
+      Firebase Analytics'in topladığı veriler reklam izleme amacıyla kullanılmaz.
+    </p>
+
+    <div class="callout">
+      <div class="callout-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M12 8v4"/>
+          <circle cx="12" cy="16" r="0.5" fill="currentColor"/>
+        </svg>
+      </div>
+      <p>
+        <strong>Analitiği devre dışı bırakmak istiyorsan</strong>,
+        Ayarlar → Gizlilik → "Anonim Kullanım İstatistikleri" anahtarını kapatabilirsin.
+        Bu durumda uygulama tam fonksiyonla çalışmaya devam eder.
+      </p>
+    </div>
+  </section>
+
+  <section id="geribildirim">
+    <div class="section-num">05 · Geri Bildirim</div>
+    <h2>Uygulama içi geri bildirim</h2>
+    <p>
+      Depolog hakkında öneri, hata bildirimi veya destek talebi göndermek için
+      <strong>Ayarlar → Geri Bildirim</strong> ekranını kullanabilirsin. Yazdığın mesaj,
+      sana cevap verebilmemiz ve sorunu çözebilmemiz için
+      <strong>Google Firebase (Firestore)</strong> üzerinde saklanır.
+    </p>
+
+    <h3>Bu sistem üzerinden gönderilen veriler</h3>
+    <ul>
+      <li><strong>Mesaj metni</strong> — kutucuğa yazdığın içerik (bu içeriği tamamen sen belirlersin)</li>
+      <li><strong>Cihaz modeli ve iOS sürümü</strong> — hata raporu olduğunda sorunu çözebilmek için</li>
+      <li><strong>Depolog sürümü</strong> — hangi sürümde sorun yaşandığını anlamak için</li>
+      <li><strong>Anonim oturum tanımlayıcısı</strong> — aynı kişiden gelen mesajları takip edebilmek için (kim olduğunu göstermez)</li>
+    </ul>
+
+    <h3>Önemli uyarı</h3>
+    <div class="callout">
+      <div class="callout-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+          <line x1="12" y1="9" x2="12" y2="13"/>
+          <line x1="12" y1="17" x2="12.01" y2="17"/>
+        </svg>
+      </div>
+      <p>
+        Geri bildirim kutucuğuna <strong>kişisel bilgilerini yazmamanı öneririz</strong>
+        (adın, soyadın, e-postan, telefon numaran, plaka vb.). Eğer cevap almak
+        istiyorsan en az veri verecek şekilde — sadece geri dönüş yapılacak e-postanı —
+        ekleyebilirsin. Bu bilgi yalnızca sana cevap vermek için kullanılır.
+      </p>
+    </div>
+
+    <h3>Saklama süresi ve silme</h3>
+    <p>
+      Geri bildirim mesajları, talebinin çözülmesinden sonra <strong>en fazla 12 ay</strong>
+      saklanır, ardından silinir. Mesajının erken silinmesini istersen, uygulamadan
+      ya da aşağıdaki iletişim kanalından talep edebilirsin.
+    </p>
+  </section>
+
+  <section id="ucuncu-taraf">
+    <div class="section-num">06 · Servisler</div>
+    <h2>Üçüncü taraf servisler</h2>
+    <p>Depolog'un kullandığı tüm üçüncü taraf servisler:</p>
+    <ul>
+      <li><strong>Google Firebase Analytics</strong> — Anonim kullanım istatistikleri · <a href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener">Gizlilik Politikası</a></li>
+      <li><strong>Google Firebase Firestore</strong> — Geri bildirim mesajları için veritabanı · <a href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener">Gizlilik Politikası</a></li>
+      <li><strong>Apple Vision Framework</strong> — Cihaz üzerinde OCR (veri aktarımı yok)</li>
+      <li><strong>Apple CoreData</strong> — Yerel veritabanı (veri aktarımı yok)</li>
+    </ul>
+    <p>
+      Depolog'da reklam (AdMob vb.), kilitlenme analitiği (Crashlytics), pazarlama
+      SDK'sı veya başka bir izleme servisi bulunmaz. Hatalar yalnızca Apple'ın
+      yerleşik kilitlenme raporu sistemi üzerinden, <strong>kendi cihaz ayarlarındaki
+      iznine bağlı olarak</strong>, geliştiriciye ulaşır.
+    </p>
+    <p>
+      Firebase verileri Google'ın <strong>ABD ve AB</strong> sunucularında işlenir.
+      Bu, KVKK kapsamında <em>yurt dışına veri aktarımı</em> niteliğindedir.
+    </p>
+  </section>
+
+  <section id="saklama">
+    <div class="section-num">07 · Saklama</div>
+    <h2>Veri saklama ve dışa aktarma</h2>
+    <p>
+      Yakıt ve araç verilerin tamamen cihazında durduğu için <strong>saklama süresini sen
+      kontrol edersin</strong>. Veri silmek ve dışa aktarmak için:
+    </p>
+    <ul>
+      <li><strong>CSV dışa aktarma</strong> — Ayarlar → "Verileri Dışa Aktar" üzerinden tüm yakıt kayıtlarını CSV formatında alabilir, mail veya başka bir uygulamayla paylaşabilirsin</li>
+      <li><strong>Tek tek silme</strong> — Her kayıt, araç veya fiş için "Sil" seçeneği mevcuttur</li>
+      <li><strong>Toplu silme</strong> — Ayarlar → "Tüm Verileri Sıfırla"</li>
+      <li><strong>Tamamen kaldırma</strong> — Uygulamayı iOS'tan kaldırdığında tüm Depolog verisi cihazından silinir</li>
+    </ul>
+    <p>
+      Anonim analitik veriler Google Firebase Analytics tarafında varsayılan saklama
+      süresine tabidir (genellikle 14 ay), sonrasında otomatik olarak silinir.
+      Geri bildirim mesajları ise en fazla 12 ay saklanır.
+    </p>
+  </section>
+
+  <section id="haklar">
+    <div class="section-num">08 · Haklar</div>
+    <h2>KVKK & GDPR haklarınız</h2>
+    <p>
+      6698 sayılı Kişisel Verilerin Korunması Kanunu (KVKK) ve AB Genel Veri Koruma
+      Tüzüğü (GDPR) kapsamındaki haklarına saygı duyuyoruz:
+    </p>
+    <ul>
+      <li><strong>Erişim hakkı</strong> — Yakıt verilerin zaten cihazında; uygulama içinde görüntülenir</li>
+      <li><strong>Düzeltme hakkı</strong> — Her kaydı düzenleyebilir veya silebilirsin</li>
+      <li><strong>Silme hakkı</strong> — Tek dokunuşla yerel veriyi silebilir, geri bildirim mesajları için silme talep edebilirsin</li>
+      <li><strong>Taşınabilirlik hakkı</strong> — Verilerini CSV formatında dışa aktarabilirsin</li>
+      <li><strong>İtiraz hakkı</strong> — Analitik veri toplanmasını uygulama içi ayardan kapatabilirsin</li>
+      <li><strong>Bilgi alma hakkı</strong> — Bu politika ve uygulama içi geri bildirim kanalı üzerinden</li>
+    </ul>
+  </section>
+
+  <section id="cocuklar">
+    <div class="section-num">09 · Çocuklar</div>
+    <h2>Çocukların gizliliği</h2>
+    <p>
+      Depolog 13 yaş altı kullanıcılara yönelik tasarlanmamıştır. Bilerek 13 yaş altı
+      kullanıcılardan hiçbir veri toplamayız. Çocuğunun Depolog kullandığını ve veri
+      paylaştığını düşünüyorsan iletişime geç, gerekli adımları atalım.
+    </p>
+  </section>
+
+  <section id="degisiklik">
+    <div class="section-num">10 · Güncellemeler</div>
+    <h2>Politika değişiklikleri</h2>
+    <p>
+      Bu gizlilik politikasını uygulama özellikleri değiştikçe veya yasal gereklilikler
+      değiştikçe güncelleyebiliriz. Önemli değişikliklerde uygulama içinde bilgilendirme
+      yaparız. Bu sayfadaki <strong>"Son güncelleme"</strong> tarihi son revizyonu gösterir.
+    </p>
+  </section>
+
+  <section id="iletisim">
+    <div class="section-num">11 · İletişim</div>
+    <h2>Sorularınız için</h2>
+    <p>
+      Gizlilik politikası, veri kullanımı, geri bildirim mesajının silinmesi veya
+      KVKK haklarınla ilgili her türlü soru ve talep için uygulama içi geri bildirim
+      sistemini kullanabilirsin. Tüm mesajlar geliştiriciye doğrudan ulaşır.
+    </p>
+
+    <div class="contact-card">
+      <h3>Geliştirici ile iletişim</h3>
+      <p style="color: var(--text-dim); font-size: 15px; margin-top: 12px;">
+        Mert Gürcan · Bağımsız iOS Geliştirici · Türkiye
+      </p>
+      <div class="contact-path">
+        Depolog → Ayarlar → Geri Bildirim
+      </div>
+      <p style="color: var(--text-mute); font-size: 13px; margin-top: 16px; max-width: 480px; position: relative; z-index: 1;">
+        Uygulamayı kaldırdıysan veya başka bir yolla iletişim kurmak istiyorsan,
+        App Store'daki Depolog destek sayfası üzerinden Apple'ın "Geliştiriciyle
+        İletişim" formunu kullanabilirsin.
+      </p>
+    </div>
+  </section>
+
+  <footer>
+    <div>© 2026 Depolog · Tüm hakları saklıdır</div>
+    <div>
+      <a href="#">Uygulama</a> ·
+      <a href="#ozet">Başa dön</a>
+    </div>
+  </footer>
+
+</div>
+
+</body>
+</html>
