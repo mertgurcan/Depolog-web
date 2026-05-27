@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Depolog - Destek</title>
+<style>
+  :root {
+    --bg: #0A0A0C;
+    --surface: #15151A;
+    --surface-hover: #1C1C22;
+    --accent: #FF7A2F;
+    --accent-dim: #C95F23;
+    --text-primary: #FFFFFF;
+    --text-secondary: #B4B4B9;
+    --text-tertiary: #82828A;
+    --border: #2A2A30;
+  }
+  
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+  
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 60px 24px;
+  }
+  
+  header {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+  
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  
+  .logo-icon {
+    width: 56px;
+    height: 56px;
+    background: var(--accent);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+  }
+  
+  .logo-text {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+  
+  .logo-text .accent {
+    color: var(--accent);
+  }
+  
+  h1 {
+    font-size: 42px;
+    font-weight: 700;
+    letter-spacing: -1px;
+    margin-bottom: 12px;
+  }
+  
+  .subtitle {
+    color: var(--text-secondary);
+    font-size: 18px;
+  }
+  
+  .contact-card {
+    background: linear-gradient(135deg, var(--surface) 0%, var(--surface-hover) 100%);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 32px;
+    margin-bottom: 48px;
+    text-align: center;
+  }
+  
+  .contact-card h2 {
+    font-size: 24px;
+    margin-bottom: 16px;
+  }
+  
+  .contact-card p {
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+  }
+  
+  .contact-steps {
+    background: var(--surface-hover);
+    border-radius: 14px;
+    padding: 20px 24px;
+    margin-top: 20px;
+    text-align: left;
+    display: inline-block;
+  }
+  
+  .contact-steps ol {
+    list-style: none;
+    counter-reset: step;
+  }
+  
+  .contact-steps li {
+    counter-increment: step;
+    padding: 8px 0 8px 36px;
+    position: relative;
+    color: var(--text-secondary);
+    font-size: 15px;
+  }
+  
+  .contact-steps li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: 8px;
+    width: 26px;
+    height: 26px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  
+  .response-time {
+    margin-top: 20px;
+    color: var(--text-tertiary);
+    font-size: 14px;
+  }
+  
+  section {
+    margin-bottom: 48px;
+  }
+  
+  h2 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    letter-spacing: -0.3px;
+  }
+  
+  .faq-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px 24px;
+    margin-bottom: 12px;
+    transition: border-color 0.2s;
+  }
+  
+  .faq-item:hover {
+    border-color: var(--accent-dim);
+  }
+  
+  .faq-question {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--text-primary);
+  }
+  
+  .faq-answer {
+    color: var(--text-secondary);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  
+  .info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  
+  @media (max-width: 600px) {
+    .info-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  .info-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+  }
+  
+  .info-card .label {
+    color: var(--text-tertiary);
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+  
+  .info-card .value {
+    font-size: 16px;
+    font-weight: 500;
+  }
+  
+  footer {
+    margin-top: 80px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    color: var(--text-tertiary);
+    font-size: 14px;
+  }
+  
+  footer a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+  
+  footer a:hover {
+    text-decoration: underline;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <header>
+    <div class="logo">
+      <div class="logo-icon">⛽</div>
+      <div class="logo-text">Depo<span class="accent">log</span></div>
+    </div>
+    <h1>Destek</h1>
+    <p class="subtitle">Depolog hakkında soru, sorun veya öneriniz mi var?</p>
+  </header>
+
+  <div class="contact-card">
+    <h2>Bize Ulaşın</h2>
+    <p>Sorularınızı, hata bildirimlerinizi ve önerilerinizi doğrudan uygulama üzerinden iletebilirsiniz.</p>
+    <div class="contact-steps">
+      <ol>
+        <li>Depolog uygulamasını açın</li>
+        <li>"Ayarlar" sekmesine gidin</li>
+        <li>"Bize Yazın" bölümünden mesajınızı gönderin</li>
+      </ol>
+    </div>
+    <div class="response-time">Genellikle 24-48 saat içinde yanıtlıyoruz</div>
+  </div>
+
+  <section>
+    <h2>Sık Sorulan Sorular</h2>
+    
+    <div class="faq-item">
+      <div class="faq-question">Depolog'u kullanmak için ne ödüyorum?</div>
+      <div class="faq-answer">Depolog tek seferlik satın alma ile kullanılır. Bir kez satın aldıktan sonra hiçbir ek ücret yoktur — abonelik, üyelik veya gizli ücret bulunmaz. Uygulamayı App Store hesabınıza bağlı tüm cihazlarda kullanabilirsiniz.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">Hesap açmam gerekiyor mu?</div>
+      <div class="faq-answer">Hayır. Depolog hesap, e-posta veya şifre istemez. Uygulamayı indirdiğiniz anda kullanmaya başlayabilirsiniz.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">Verilerim nerede saklanıyor?</div>
+      <div class="faq-answer">Tüm verileriniz yalnızca cihazınızda saklanır. Hiçbir veri sunuculara gönderilmez veya üçüncü taraflarla paylaşılmaz. Bu nedenle uygulamayı sildiğinizde tüm verileriniz de silinir.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">Fiş tarama nasıl çalışır?</div>
+      <div class="faq-answer">Kamerayı fişe doğrultmanız yeterli. Depolog, fiş üzerindeki tarih, litre, birim fiyat ve toplam tutarı otomatik olarak tanır ve form alanlarına doldurur. İsterseniz verileri kontrol edip düzenleyebilirsiniz.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">Fiş tarama çalışmıyor, ne yapmalıyım?</div>
+      <div class="faq-answer">Tarama için iyi aydınlatma ve fişin düz bir zeminde olması önemlidir. Eğer hâlâ sorun yaşıyorsanız "Elle Ekle" seçeneğiyle verileri manuel girebilirsiniz. Uygulama içindeki "Bize Yazın" bölümünden ulaşırsanız iyileştirme için fiş örneğinizi inceleyebiliriz.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">Birden fazla araç ekleyebilir miyim?</div>
+      <div class="faq-answer">Evet, sınırsız sayıda araç ekleyebilirsiniz. Her araç için ayrı istatistik ve geçmiş tutulur. "Araçlar" sekmesinden aktif aracı seçebilirsiniz.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">Verilerimi yedekleyebilir miyim?</div>
+      <div class="faq-answer">Şu an için veri yedekleme özelliği üzerinde çalışıyoruz. Bu özellik için takipte kalın.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">Reklam göreceğim mi?</div>
+      <div class="faq-answer">Depolog'da reklam yoktur. Tek seferlik satın alma ile reklamsız bir deneyim sunar.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">Hangi cihazlarda çalışıyor?</div>
+      <div class="faq-answer">Depolog, iOS 15 ve üzeri tüm iPhone modellerinde çalışır.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">Yeni özellik önerebilir miyim?</div>
+      <div class="faq-answer">Tabii ki! Önerileriniz Depolog'u daha iyi yapmamıza yardımcı olur. Uygulama içindeki "Ayarlar → Bize Yazın" bölümünden bize ulaşabilirsiniz.</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Uygulama Bilgileri</h2>
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="label">Geliştirici</div>
+        <div class="value">Mert Gürcan</div>
+      </div>
+      <div class="info-card">
+        <div class="label">Platform</div>
+        <div class="value">iOS 15+</div>
+      </div>
+      <div class="info-card">
+        <div class="label">Kategori</div>
+        <div class="value">Araçlar</div>
+      </div>
+      <div class="info-card">
+        <div class="label">Dil</div>
+        <div class="value">Türkçe</div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>
+      <a href="../privacy-policy/">Gizlilik Politikası</a>
+    </p>
+    <p style="margin-top: 12px;">© 2026 Mert Gürcan · Depolog</p>
+  </footer>
+
+</div>
+
+</body>
+</html>
